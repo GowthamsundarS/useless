@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PawPal - AI Assistant for Animals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --pink: #ff6f61;
+      --card: #fff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=1740&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      text-align: center;
+      overflow-x: hidden;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+      color: var(--pink);
+      font-size: 2.5rem;
+      animation: popIn 1s ease-out;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      max-width: 500px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 8px 24px var(--shadow);
+      animation: floatUp 1s ease-in-out;
+    }
+
+    .paw {
+      font-size: 4rem;
+      animation: bounce 2s infinite;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+      color: #444;
+      font-size: 1rem;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    button {
+      background-color: var(--pink);
+      color: white;
+      font-weight: bold;
+      margin-top: 20px;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #ff3b2f;
+      transform: scale(1.03);
+    }
+
+    .response {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      color: #444;
+      min-height: 60px;
+      padding: 10px;
+      border-radius: 10px;
+      animation: pulse 1s ease-out;
+      background-color: #fff5f5;
+      overflow: hidden;
+      animation: reveal 2s steps(10, end) forwards;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); background-color: #ffe6e6; }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes reveal {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .paw {
+        font-size: 3rem;
+      }
+      .container {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="paw">🐾</div>
+    <h1>PawPal – AI Assistant for Animals</h1>
+
+    <label for="animal">Choose your animal:</label>
+    <select id="animal">
+      <option value="dog">Dog 🐶</option>
+      <option value="cat">Cat 🐱</option>
+      <option value="rabbit">Rabbit 🐰</option>
+      <option value="parrot">Parrot 🦜</option>
+    </select>
+
+    <label for="query">What does your animal want?</label>
+    <input type="text" id="query" placeholder="e.g. I’m cold, I want to play..." />
+
+    <button onclick="getResponse()">Ask PawPal</button>
+
+    <div class="response" id="responseBox">🧠 PawPal is ready to respond!</div>
+  </div>
+
+  <!-- Animal Sound Effects -->
+  <audio id="sound-dog" src="dog-bark-sound-effect-322989.mp3" preload="auto"></audio>
+  <audio id="sound-cat" src="cat-98721.mp3" preload="auto"></audio>
+  <audio id="sound-rabbit" src="rabbit-sounds-358172.mp3" preload="auto"></audio>
+  <audio id="sound-parrot" src="parrots-88486.mp3" preload="auto"></audio>
+
+  <script>
+    function getResponse() {
+      const animal = document.getElementById("animal").value;
+      const query = document.getElementById("query").value.toLowerCase().trim();
+      const responseBox = document.getElementById("responseBox");
+
+      const responses = {
+        dog: {
+          food: "njn thinnonn choikkan nee araaada...🐶",
+          hungry: "🍗ente muthalaali oru chetteyaaa😠!",
+          play: "🎾 LET’S PLAY! dhairyam indeel vaada!",
+          walk: "🚶‍♂️ nee po enikk vayya!",
+          cuddle: "💞 enikk oru thalaparyam illeda",
+          sleep: "💤 sugha nidhra",
+          bored: "😴 katta boring?",
+          excited: "🐕 illa pulle...!",
+          lonely: "🥺 njn ennum ottak thanneya.",
+          angry: "😠 enne aryoola ninakk.",
+          cold: "❄️ njn oru thanuppan alleeeee!"
+        },
+        cat: {
+          food: "njn thinnonn choikkan nee araaada...🐶",
+          hungry: "🍗ente muthalaali oru chetteyaaa😠!",
+          play: "🎾 LET’S PLAY! dhairyam indeel vaada!",
+          walk: "🚶‍♂️ nee po enikk vayya!",
+          cuddle: "💞 enikk oru thalaparyam illeda",
+          sleep: "💤 sugha nidhra",
+          bored: "😴 katta boring?",
+          excited: "🐕 illa pulle...!",
+          lonely: "🥺 njn ennum ottak thanneya.",
+          angry: "😠 enne aryoola ninakk.",
+          cold: "❄️ njn oru thanuppan alleeeee!"
+        },
+        rabbit: {
+          food: "njn thinnonn choikkan nee araaada...🐶",
+          hungry: "🍗ente muthalaali oru chetteyaaa😠!",
+          play: "🎾 LET’S PLAY! dhairyam indeel vaada!",
+          walk: "🚶‍♂️ nee po enikk vayya!",
+          cuddle: "💞 enikk oru thalaparyam illeda",
+          sleep: "💤 sugha nidhra",
+          bored: "😴 katta boring?",
+          excited: "🐕 illa pulle...!",
+          lonely: "🥺 njn ennum ottak thanneya.",
+          angry: "😠 enne aryoola ninakk.",
+          cold: "❄️ njn oru thanuppan alleeeee!"
+        },
+        parrot: {
+          food: "njn thinnonn choikkan nee araaada...🐶",
+          hungry: "🍗ente muthalaali oru chetteyaaa😠!",
+          play: "🎾 LET’S PLAY! dhairyam indeel vaada!",
+          walk: "🚶‍♂️ nee po enikk vayya!",
+          cuddle: "💞 enikk oru thalaparyam illeda",
+          sleep: "💤 sugha nidhra",
+          bored: "😴 katta boring?",
+          excited: "🐕 illa pulle...!",
+          lonely: "🥺 njn ennum ottak thanneya.",
+          angry: "😠 enne aryoola ninakk.",
+          cold: "❄️ njn oru thanuppan alleeeee!"
+        }
+      };
+
+      const sounds = {
+        dog: document.getElementById("sound-dog"),
+        cat: document.getElementById("sound-cat"),
+        rabbit: document.getElementById("sound-rabbit"),
+        parrot: document.getElementById("sound-parrot")
+      };
+
+      const intents = Object.keys(responses[animal]);
+      const match = intents.find(intent => query.includes(intent));
+      let reply;
+
+      responseBox.style.animation = "none";
+      void responseBox.offsetWidth;
+      responseBox.style.animation = "pulse 1s ease-out";
+
+      if (match) {
+        reply = responses[animal][match];
+        responseBox.textContent = reply;
+      } else {
+        reply = "🤖 PawPal didn’t catch that. Try words like 'hungry', 'play', or 'cold'.";
+        responseBox.textContent = reply;
+      }
+
+      // Play animal sound
+      if (sounds[animal]) {
+        sounds[animal].currentTime = 0;
+        sounds[animal].play().catch(() => {});
+      }
+    }
+  </script>
+</body>
+</html>
