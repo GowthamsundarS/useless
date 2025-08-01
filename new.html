@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Music Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #1e1e1e;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding-top: 50px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    .calculator {
+      background: #2e2e2e;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #000;
+      width: 300px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      font-size: 24px;
+      text-align: right;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .wide {
+      grid-column: span 2;
+      background-color: #f44336;
+    }
+
+    .wide:hover {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎵 Music Calculator 🎶</h1>
+
+  <div class="calculator">
+    <input type="text" id="display" readonly>
+    <div class="buttons">
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button onclick="press('+')">+</button>
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button onclick="press('-')">-</button>
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button onclick="press('*')">*</button>
+      <button onclick="press('0')">0</button>
+      <button onclick="press('.')">.</button>
+      <button onclick="calculate()">=</button>
+      <button onclick="press('/')">/</button>
+      <button onclick="clearDisplay()" class="wide">Clear</button>
+    </div>
+  </div>
+
+  <!-- Hidden YouTube player -->
+  <iframe 
+    id="ytAudio"
+    width="0"
+    height="0"
+    src=""
+    frameborder="0"
+    allow="autoplay"
+    style="display: none;">
+  </iframe>
+
+  <script>
+    const display = document.getElementById("display");
+
+    // Updated first song to: https://youtu.be/PWKbv86hL_s
+    const youtubeSongs = [
+      "PWKbv86hL_s", // 🎵 Your song
+      "y6120QOlsfU", // Sandstorm
+      "jJPMnTXl63E", // Coffin Dance
+      "QH2-TGUlwu4", // Nyan Cat
+      "ZZ5LpwO-An4"  // He-Man
+    ];
+
+    function press(val) {
+      display.value += val;
+    }
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function playRandomYouTubeAudio() {
+      const ytAudio = document.getElementById("ytAudio");
+      const randomId = youtubeSongs[Math.floor(Math.random() * youtubeSongs.length)];
+      ytAudio.src = `https://www.youtube.com/embed/${randomId}?autoplay=1&mute=0`;
+    }
+
+    function calculate() {
+      try {
+        const result = new Function(`return ${display.value}`)();
+        display.value = result;
+        playRandomYouTubeAudio();
+      } catch (err) {
+        display.value = "Error";
+      }
+    }
+  </script>
+</body>
+</html>

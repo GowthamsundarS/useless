@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meme Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <style>
+    /* Base styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Bangers', cursive;
+      background: linear-gradient(135deg, #ff6bcb, #6bffff);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      overflow-x: hidden;
+      cursor: url('https://i.imgur.com/7zM5b0p.png'), auto; /* Custom meme cursor */
+    }
+
+    /* Particle background */
+    #particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: float 10s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      50% { transform: translateY(-100vh) scale(0.5); opacity: 0.2; }
+      100% { transform: translateY(-200vh) scale(0); opacity: 0; }
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 3.5em;
+      color: #ffeb3b;
+      text-shadow: 0 0 10px #ff4081, 0 0 20px #ff4081;
+      z-index: 2;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .calculator {
+      background: rgba(255, 255, 255, 0.95);
+      max-width: 420px;
+      width: 90%;
+      padding: 30px;
+      margin: 20px auto;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(255, 107, 203, 0.5);
+      z-index: 2;
+      position: relative;
+      backdrop-filter: blur(5px);
+      animation: glow 3s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 20px rgba(255, 107, 203, 0.3); }
+      100% { box-shadow: 0 0 40px rgba(255, 107, 203, 0.7); }
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      font-size: 28px;
+      text-align: right;
+      margin-bottom: 20px;
+      border: 2px solid #ff6bcb;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+      font-family: 'Bangers', cursive;
+      color: #333;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .buttons button {
+      width: 22%;
+      height: 65px;
+      font-size: 22px;
+      border-radius: 15px;
+      border: none;
+      background: linear-gradient(145deg, #ffeb3b, #ff9800);
+      color: #333;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .buttons button:hover {
+      background: linear-gradient(145deg, #f06292, #ec407a);
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px #f06292;
+    }
+
+    .buttons .wide {
+      width: 95%;
+      background: linear-gradient(145deg, #64ffda, #00e676);
+    }
+
+    .buttons .wide:hover {
+      background: linear-gradient(145deg, #26a69a, #00897b);
+      box-shadow: 0 0 15px #26a69a;
+    }
+
+    .meme {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .meme img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      animation: popIn 0.5s ease-out;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    /* Responsive design */
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 2.5em;
+      }
+      .buttons button {
+        width: 22%;
+        height: 55px;
+        font-size: 20px;
+      }
+      input {
+        font-size: 24px;
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .buttons button {
+        width: 45%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles"></div>
+  <h1>Meme Calculator</h1>
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+    <div class="buttons">
+      <button onclick="press('7')" data-tilt data-tilt-max="15">7</button>
+      <button onclick="press('8')" data-tilt data-tilt-max="15">8</button>
+      <button onclick="press('9')" data-tilt data-tilt-max="15">9</button>
+      <button onclick="press('+')" data-tilt data-tilt-max="15">+</button>
+      <button onclick="press('4')" data-tilt data-tilt-max="15">4</button>
+      <button onclick="press('5')" data-tilt data-tilt-max="15">5</button>
+      <button onclick="press('6')" data-tilt data-tilt-max="15">6</button>
+      <button onclick="press('-')" data-tilt data-tilt-max="15">-</button>
+      <button onclick="press('1')" data-tilt data-tilt-max="15">1</button>
+      <button onclick="press('2')" data-tilt data-tilt-max="15">2</button>
+      <button onclick="press('3')" data-tilt data-tilt-max="15">3</button>
+      <button onclick="press('*')" data-tilt data-tilt-max="15">*</button>
+      <button onclick="press('0')" data-tilt data-tilt-max="15">0</button>
+      <button onclick="press('.')" data-tilt data-tilt-max="15">.</button>
+      <button onclick="calculate()" data-tilt data-tilt-max="15">=</button>
+      <button onclick="press('/')" data-tilt data-tilt-max="15">/</button>
+      <button onclick="clearDisplay()" class="wide" data-tilt data-tilt-max="15">Clear</button>
+    </div>
+    <div class="meme" id="memeBox"></div>
+  </div>
+
+  <script>
+    let display = document.getElementById("display");
+
+    // Preload audio
+    const sounds = [
+      "https://youtu.be/OXHTlMPbX7o?si=Ottkp1pX8UyG3tq0",
+      "https://www.myinstants.com/media/sounds/bruh.mp3",
+      "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"
+    ].map(src => {
+      const audio = new Audio(src);
+      audio.preload = "auto";
+      return audio;
+    });
+
+    const clickSound = new Audio("https://www.myinstants.com/media/sounds/button-click.mp3");
+    clickSound.preload = "auto";
+
+    const memes = [
+      "https://i.imgflip.com/1bij.jpg",
+      "https://i.imgflip.com/5w3fqv.jpg",
+      "https://i.imgflip.com/3si4.jpg",
+      "https://i.kym-cdn.com/photos/images/original/001/931/128/b03.jpg"
+    ];
+
+    // Particle effect
+    function createParticles() {
+      const particleContainer = document.getElementById("particles");
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.animationDelay = Math.random() * 5 + "s";
+        particle.style.width = particle.style.height = Math.random() * 10 + 5 + "px";
+        particleContainer.appendChild(particle);
+      }
+    }
+    createParticles();
+
+    function press(key) {
+      display.value += key;
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+
+    function clearDisplay() {
+      display.value = "";
+      document.getElementById("memeBox").innerHTML = "";
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+
+    function calculate() {
+      try {
+        let result = new Function(`return ${display.value}`)();
+        display.value = result;
+        const randomMeme = memes[Math.floor(Math.random() * memes.length)];
+        const memeHTML = `<img src="${randomMeme}" alt="Random meme">`;
+        document.getElementById("memeBox").innerHTML = memeHTML;
+        const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+        randomSound.currentTime = 0;
+        randomSound.play().catch(() => {});
+      } catch (e) {
+        display.value = "Error";
+        document.getElementById("memeBox").innerHTML = "";
+      }
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+
+    // Keyboard support
+    document.addEventListener("keydown", (e) => {
+      const key = e.key;
+      if (/[0-9+\-*/.]/.test(key)) {
+        press(key);
+      } else if (key === "Enter") {
+        calculate();
+      } else if (key === "Escape") {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>
